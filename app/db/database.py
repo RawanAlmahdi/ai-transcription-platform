@@ -1,0 +1,28 @@
+# app/db/database.py
+
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
+# Get database URL from .env
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# Create database engine
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True  # prevents connection issues
+)
+
+# Create session factory
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
+
+# Base class for all models
+Base = declarative_base()
